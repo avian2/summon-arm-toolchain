@@ -18,12 +18,12 @@ set -e
 # Settings section
 # You probably want to customize those
 ##############################################################################
-TARGET=arm-none-eabi		# Or: TARGET=arm-elf
-PREFIX=${HOME}/sat	# Install location of your final toolchain
+TARGET=arm-elf		# Or: TARGET=arm-elf
+PREFIX=/arm	# Install location of your final toolchain
 PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
 DARWIN_OPT_PATH=/opt/local	# Path in which MacPorts or Fink is installed
 # Set to 'sudo' if you need superuser privileges while installing
-SUDO=
+SUDO='sudo'
 # Set to 1 to be quieter while running
 QUIET=0
 # Set to 1 to use linaro gcc instead of the FSF gcc
@@ -103,19 +103,41 @@ case "$(uname)" in
 	;;
 	Darwin)
 	echo "Found Darwin OS."
-	GCCFLAGS="${GCCFLAGS} \
-                  --with-gmp=${DARWIN_OPT_PATH} \
+
+  GCCFLAGS="${GCCFLAGS} \
+            --with-gmp=${DARWIN_OPT_PATH} \
 	          --with-mpfr=${DARWIN_OPT_PATH} \
 	          --with-mpc=${DARWIN_OPT_PATH} \
-		  -with-libiconv-prefix=${DARWIN_OPT_PATH}"
-        if ! which gnutar > /dev/null ; then
+		        -with-libiconv-prefix=${DARWIN_OPT_PATH}"
+  if ! which gnutar > /dev/null ; then
 		echo "ERROR: GNU tar not found! (try 'sudo port install gnutar')"
 		exit 1
 	else
 		echo "GNU tar found!"
 		TAR=gnutar
 	fi
+
+  echo "Attempting to automatically check if common depencies are installed on your system"
+  if ! which port > /dev/null; then
+    echo "MacPorts not installed, could not check for requirements automatically"
+  else
+    pc=`port installed mpfr libmpc gmp | wc -l | tr -d " "`
+    if [ ${pc} -lt 4 ];
+    then
+      echo "Something is missing, do you want to install everything needed?"
+      echo "(You need super user rights to do this.)"
+
+      if [ read = "y" || read = "yes" ];
+      then
+        sudo port install mpfr libmpc gmp
+      fi
+    else
+      echo "Found mpfr, libmpc and gmp. Proceeding..."
+    fi
+  fi
+
 	;;
+
 	*)
 	echo "Found unknown OS. Aborting!"
 	exit 1
@@ -146,8 +168,12 @@ function log {
 # Unpack an archive
 function unpack {
     log Unpacking $*
-    # Use 'auto' mode decompression.  Replace with a switch if tar doesn't support -a
-    ${TAR} xaf${TARFLAGS} ${SOURCES}/$1.tar.*
+    if [ -f ${SOURCES}/$1.tar.gz ];
+    then
+      ${TAR} xfz${TARFLAGS} ${SOURCES}/$1.tar.gz
+    else
+      ${TAR} xfj${TARFLAGS} ${SOURCES}/$1.tar.bz2
+    fi
 }
 
 # Install a build
