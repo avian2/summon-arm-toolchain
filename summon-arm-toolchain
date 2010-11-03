@@ -133,6 +133,8 @@ case "$(uname)" in
     fi
   fi
 
+  TAR=gnutar
+
 	;;
 
 	*)
