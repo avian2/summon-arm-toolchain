@@ -104,35 +104,32 @@ case "$(uname)" in
 	Darwin)
 	echo "Found Darwin OS."
 
+	# darwin dependencies
+	DARWINDEPS="gnutar mpfr libmpc gmp"
+  DARWINDEPSCOUNT=4
+
   GCCFLAGS="${GCCFLAGS} \
             --with-gmp=${DARWIN_OPT_PATH} \
 	          --with-mpfr=${DARWIN_OPT_PATH} \
 	          --with-mpc=${DARWIN_OPT_PATH} \
 		        -with-libiconv-prefix=${DARWIN_OPT_PATH}"
-  if ! which gnutar > /dev/null ; then
-		echo "ERROR: GNU tar not found! (try 'sudo port install gnutar')"
-		exit 1
-	else
-		echo "GNU tar found!"
-		TAR=gnutar
-	fi
 
-  echo "Attempting to automatically check if common depencies are installed on your system"
+  echo "Attempting to automatically check if common dependencies are installed on your system"
   if ! which port > /dev/null; then
-    echo "MacPorts not installed, could not check for requirements automatically"
+    echo "MacPorts not installed."
   else
-    pc=`port installed mpfr libmpc gmp | wc -l | tr -d " "`
-    if [ ${pc} -lt 4 ];
+    pc=`port installed ${DARWINDEPS} | wc -l | tr -d " "`
+    if [ ${pc} -lt ${DARWINDEPSCOUNT} ];
     then
       echo "Something is missing, do you want to install everything needed?"
       echo "(You need super user rights to do this.)"
 
       if [ read = "y" || read = "yes" ];
       then
-        sudo port install mpfr libmpc gmp
+        sudo port install ${DARWINDEPS}
       fi
     else
-      echo "Found mpfr, libmpc and gmp. Proceeding..."
+      echo "Found: "${DARWINDEPS}"!"
     fi
   fi
 
