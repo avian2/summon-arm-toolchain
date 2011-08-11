@@ -18,14 +18,14 @@ set -e
 # Settings section
 # You probably want to customize those
 ##############################################################################
-TARGET=arm-elf		# Or: TARGET=arm-elf
-PREFIX=/arm	# Install location of your final toolchain
+TARGET=arm-eabi		# Or: TARGET=arm-elf
+PREFIX=${HOME}/arm	# Install location of your final toolchain
 PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
-DARWIN_OPT_PATH=/opt/local	# Path in which MacPorts or Fink is installed
+DARWIN_CELLAR=$(brew --cellar)	# Path in which MacPorts or Fink is installed
 # Set to 'sudo' if you need superuser privileges while installing
-SUDO='sudo'
+SUDO=''
 # Set to 1 to be quieter while running
-QUIET=0
+QUIET=1
 # Set to 1 to use linaro gcc instead of the FSF gcc
 USE_LINARO=1
 # Set to 1 to enable building of OpenOCD
@@ -35,7 +35,7 @@ LIBSTM32_EN=0
 # Set to 1 to build libopenstm32 an open source library for stm32
 LIBOPENSTM32_EN=1
 # Make the gcc default to Cortex-M3
-DEFAULT_TO_CORTEX_M3=0
+DEFAULT_TO_CORTEX_M3=1
 
 ##############################################################################
 # Version and download url settings section
