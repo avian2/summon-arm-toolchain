@@ -44,7 +44,7 @@ else
 	GCCRELEASE=4.6-2011.07
 	GCCVERSION=${GCCRELEASE}
 	GCC=gcc-linaro-${GCCVERSION}
-	GCCURL=http://launchpad.net/gcc-linaro/4.5/${GCCRELEASE}/+download/${GCC}.tar.bz2
+	GCCURL=http://launchpad.net/gcc-linaro/4.6/${GCCRELEASE}/+download/${GCC}.tar.bz2
 fi
 
 BINUTILS=binutils-2.21
