@@ -116,33 +116,21 @@ case "$(uname)" in
 	echo "Found Darwin OS."
 
 	# darwin dependencies
-	DARWINDEPS="gnutar mpfr libmpc gmp"
+	DARWINDEPS="gnu-tar wget mpfr libmpc gmp"
   DARWINDEPSCOUNT=4
 
-  GCCFLAGS="${GCCFLAGS} \
-            --with-gmp=${DARWIN_OPT_PATH} \
-	          --with-mpfr=${DARWIN_OPT_PATH} \
-	          --with-mpc=${DARWIN_OPT_PATH} \
-		        -with-libiconv-prefix=${DARWIN_OPT_PATH}"
-
-  echo "Attempting to automatically check if common dependencies are installed on your system"
-  if ! which port > /dev/null; then
-    echo "MacPorts not installed."
+  echo "Installing dependencies"
+  if ! which brew > /dev/null; then
+    echo "homebrew not installed."
   else
-    pc=`port installed ${DARWINDEPS} | wc -l | tr -d " "`
-    if [ ${pc} -lt $[${DARWINDEPSCOUNT}+1] ];
-    then
-      echo "Something is missing, do you want to install everything needed?"
-      echo "(You need super user rights to do this.)"
-
-      if [ read = "y" || read = "yes" ];
-      then
-        sudo port install ${DARWINDEPS}
-      fi
-    else
-      echo "Found: "${DARWINDEPS}"!"
-    fi
+    brew install ${DARWINDEPS} | grep -v '^Warning: Formula already installed: '
   fi
+
+  GCCFLAGS="${GCCFLAGS} \
+      --with-gmp=$(brew --prefix gmp) \
+      --with-mpfr=$(brew --prefix mpfr) \
+                  --with-mpc=$(brew --prefix mpc)
+  -with-libiconv-prefix=$(brew --prefix libiconv)"
 
   TAR=gnutar
 
