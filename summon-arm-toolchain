@@ -16,7 +16,6 @@ set -e
 TARGET=arm-eabi		# Or: TARGET=arm-elf
 PREFIX=${HOME}/arm	# Install location of your final toolchain
 PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
-DARWIN_CELLAR=$(brew --cellar)	# Path in which MacPorts or Fink is installed
 # Set to 'sudo' if you need superuser privileges while installing
 SUDO=''
 # Set to 1 to be quieter while running
