@@ -19,7 +19,7 @@ PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
 # Set to 'sudo' if you need superuser privileges while installing
 SUDO=''
 # Set to 1 to be quieter while running
-QUIET=1
+QUIET=0
 # Set to 1 to use linaro gcc instead of the FSF gcc
 USE_LINARO=1
 # Set to 1 to enable building of OpenOCD
