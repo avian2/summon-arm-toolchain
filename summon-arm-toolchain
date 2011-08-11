@@ -38,13 +38,15 @@ if [ ${USE_LINARO} == 0 ] ; then
 	# For FSF GCC:
 	GCCVERSION=4.5.1
 	GCC=gcc-${GCCVERSION}
+        GCCDIR=${GCC}
 	GCCURL=http://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.gz
 else
 	# For the Linaro GCC:
 	GCCRELEASE=4.6-2011.07
-	GCCVERSION=${GCCRELEASE}
-	GCC=gcc-linaro-${GCCVERSION}
-	GCCURL=http://launchpad.net/gcc-linaro/4.6/${GCCRELEASE}/+download/${GCC}.tar.bz2
+	GCCVERSION=4.6-2011.07-0
+        GCC=gcc-linaro-${GCCRELEASE}
+	GCCDIR=gcc-linaro-${GCCVERSION}
+	GCCURL=http://launchpad.net/gcc-linaro/4.6/${GCCRELEASE}/+download/gcc-linaro-${GCCRELEASE}.tar.bz2
 fi
 
 BINUTILS=binutils-2.21
@@ -296,7 +298,7 @@ if [ ! -e ${STAMPS}/${GCC}-boot.build ]; then
     unpack ${GCC} boot
     cd build
     log "Configuring ${GCC}-boot"
-    ../${GCC}/configure --target=${TARGET} \
+    ../${GCCDIR}/configure --target=${TARGET} \
                       --prefix=${PREFIX} \
                       --enable-interwork \
                       --enable-multilib \
@@ -316,7 +318,7 @@ if [ ! -e ${STAMPS}/${GCC}-boot.build ]; then
     cd ..
     log "Cleaning up ${GCC}-boot"
     touch ${STAMPS}/${GCC}-boot.build
-    rm -rf build/* ${GCC}
+    rm -rf build/* ${GCCDIR}
 fi
 
 if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
@@ -347,7 +349,7 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
     unpack ${GCC}
     cd build
     log "Configuring ${GCC}"
-    ../${GCC}/configure --target=${TARGET} \
+    ../${GCCDIR}/configure --target=${TARGET} \
                       --prefix=${PREFIX} \
                       --enable-interwork \
                       --enable-multilib \
@@ -366,7 +368,7 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
     cd ..
     log "Cleaning up ${GCC}"
     touch ${STAMPS}/${GCC}.build
-    rm -rf build/* ${GCC}
+    rm -rf build/* ${GCCDIR}
 fi
 
 if [ ! -e ${STAMPS}/${GDB}.build ]; then
