@@ -116,7 +116,7 @@ case "$(uname)" in
 	echo "Found Darwin OS."
 
 	# darwin dependencies
-	DARWINDEPS="gnu-tar wget mpfr libmpc gmp"
+	DARWINDEPS="wget mpfr libmpc gmp"
   DARWINDEPSCOUNT=4
 
   echo "Installing dependencies ..."
