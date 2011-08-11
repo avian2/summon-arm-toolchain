@@ -119,9 +119,9 @@ case "$(uname)" in
 	DARWINDEPS="gnu-tar wget mpfr libmpc gmp"
   DARWINDEPSCOUNT=4
 
-  echo "Installing dependencies"
+  echo "Installing dependencies ..."
   if ! which brew > /dev/null; then
-    echo "homebrew not installed."
+    echo "Homebrew not installed."
   else
       brew install ${DARWINDEPS} | (grep -v '^Warning: Formula already installed: ' || true)
   fi
