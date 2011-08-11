@@ -134,7 +134,6 @@ case "$(uname)" in
 
   TAR=gnutar
 
-		  --with-libiconv-prefix=${DARWIN_OPT_PATH}"
 	OOCD_CFLAGS="-m32 -I/opt/mine/include -I/opt/local/include"
 	OOCD_LDFLAGS="-L/opt/mine/lib -L/opt/local/lib"
 	;;
