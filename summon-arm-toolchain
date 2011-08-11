@@ -4,6 +4,7 @@
 
 # adapted for r0ket <http://r0ket.badge.events.ccc.de> development by
 # Matthias Rampke <matthias@rampke.de>
+# requires Homebrew <https://mxcl.github.com/homebrew>
 
 # Stop if any command fails
 set -e
