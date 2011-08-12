@@ -14,7 +14,8 @@ set -e
 # You probably want to customize those
 ##############################################################################
 TARGET=arm-eabi		# Or: TARGET=arm-elf
-PREFIX=${HOME}/arm	# Install location of your final toolchain
+[ -z $PREFIX ] && PREFIX=${HOME}/arm	# Install location of your final toolchain
+[ -z $WORKDIR ] && WORKDIR=$PREFIX/work     #temporary directory
 PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
 # Set to 'sudo' if you need superuser privileges while installing
 SUDO=''
