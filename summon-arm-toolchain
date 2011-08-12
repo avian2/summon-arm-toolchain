@@ -37,7 +37,7 @@ DEFAULT_TO_CORTEX_M3=1
 ##############################################################################
 if [ ${USE_LINARO} == 0 ] ; then
 	# For FSF GCC:
-	GCCVERSION=4.5.1
+	GCCVERSION=4.6.1
 	GCC=gcc-${GCCVERSION}
         GCCDIR=${GCC}
 	GCCURL=http://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.gz
