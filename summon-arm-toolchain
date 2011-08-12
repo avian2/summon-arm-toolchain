@@ -38,9 +38,9 @@ DEFAULT_TO_CORTEX_M3=1
 if [ ${USE_LINARO} == 0 ] ; then
 	# For FSF GCC:
 	GCCVERSION=4.6.1
-	GCC=gcc-${GCCVERSION}
-        GCCDIR=${GCC}
-	GCCURL=http://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.gz
+	GCC=gcc-core-${GCCVERSION}
+        GCCDIR=gcc-${GCCVERSION}
+	GCCURL=http://ftp.gnu.org/gnu/gcc/${GCCDIR}/${GCC}.tar.gz
 else
 	# For the Linaro GCC:
 	GCCRELEASE=4.6-2011.07
@@ -199,7 +199,12 @@ function install {
     ${SUDO} make ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
 }
 
-
+if [ ! -d $SUMMON_DIR ]; then
+    mkdir -p ${SUMMON_DIR}
+    SUMMON_DIR_CREATED=1
+else
+    SUMMON_DIR_CREATED=0
+fi
 mkdir -p ${STAMPS} ${SOURCES}
 
 cd ${SOURCES}
@@ -267,7 +272,6 @@ if [ ! -e libopenstm32-${LIBOPENSTM32}.tar.bz2 ]; then
 fi
 fi
 
-mkdir -p ${SUMMON_DIR}
 cd ${SUMMON_DIR}
 
 if [ ! -e build ]; then
@@ -477,4 +481,9 @@ if [ ! -e ${STAMPS}/libopenstm32-${LIBOPENSTM32}.build ]; then
     touch ${STAMPS}/libopenstm32-${LIBOPENSTM32}.build
     rm -rf libopenstm32-${LIBOPENSTM32}
 fi
+fi
+
+if [ ${SUMMON_DIR_CREATED} == 1 ]; then
+    log "Removing work directory"
+    rm -rf ${SUMMON_DIR}
 fi
