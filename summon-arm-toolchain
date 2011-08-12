@@ -96,7 +96,7 @@ fi
 
 export PATH="${PREFIX}/bin:${PATH}"
 
-SUMMON_DIR=$(pwd)
+SUMMON_DIR=${WORKDIR}
 SOURCES=${SUMMON_DIR}/sources
 STAMPS=${SUMMON_DIR}/stamps
 
@@ -267,6 +267,7 @@ if [ ! -e libopenstm32-${LIBOPENSTM32}.tar.bz2 ]; then
 fi
 fi
 
+mkdir -p ${SUMMON_DIR}
 cd ${SUMMON_DIR}
 
 if [ ! -e build ]; then
