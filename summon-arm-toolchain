@@ -23,6 +23,8 @@ SUDO=''
 QUIET=0
 # Set to 1 to use linaro gcc instead of the FSF gcc
 USE_LINARO=1
+# Set to 1 to enable C++
+USE_CPP=0
 # Set to 1 to enable building of OpenOCD
 OOCD_EN=0
 # Set to 1 to build libstm32 provided by ST
@@ -38,9 +40,14 @@ DEFAULT_TO_CORTEX_M3=1
 if [ ${USE_LINARO} == 0 ] ; then
 	# For FSF GCC:
 	GCCVERSION=4.6.1
-	GCC=gcc-core-${GCCVERSION}
-        GCCDIR=gcc-${GCCVERSION}
-	GCCURL=http://ftp.gnu.org/gnu/gcc/${GCCDIR}/${GCC}.tar.gz
+        if [ ${USE_CPP} == 0 ]; then
+            GCC=gcc-core-${GCCVERSION}
+            GCCDIR=gcc-${GCCVERSION}
+        else
+            GCC=gcc-${GCCVERSION}
+            GCCDIR=${GCC}
+        fi
+        GCCURL=http://ftp.gnu.org/gnu/gcc/${GCCDIR}/${GCC}.tar.gz
 else
 	# For the Linaro GCC:
 	GCCRELEASE=4.6-2011.07
@@ -355,11 +362,11 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
     unpack ${GCC}
     cd build
     log "Configuring ${GCC}"
+    [ ${USE_CPP} == 1 ] && GCCFLAGS="--enable-languages='c,c++' ${GCCFLAGS}"
     ../${GCCDIR}/configure --target=${TARGET} \
                       --prefix=${PREFIX} \
                       --enable-interwork \
                       --enable-multilib \
-                      --enable-languages="c,c++" \
                       --with-newlib \
                       --disable-shared \
                       --with-gnu-as \
