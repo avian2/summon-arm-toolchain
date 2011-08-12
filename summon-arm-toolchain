@@ -162,7 +162,7 @@ esac
 ##############################################################################
 
 # Fetch a versioned file from a URL
-function fetch {
+fetch() {
     if [ ! -e ${STAMPS}/$1.fetch ]; then
         log "Downloading $1 sources..."
         wget -c $2
@@ -171,14 +171,14 @@ function fetch {
 }
 
 # Log a message out to the console
-function log {
+log() {
     echo "******************************************************************"
     echo "* $*"
     echo "******************************************************************"
 }
 
 # Unpack an archive
-function unpack {
+unpack() {
     log Unpacking $*
     # Use 'auto' mode decompression.  Replace with a switch if tar doesn't support -a
     ARCHIVE=$(ls ${SOURCES}/$1.tar.*)
@@ -201,7 +201,7 @@ function unpack {
 }
 
 # Install a build
-function install {
+install() {
     log $1
     ${SUDO} make ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
 }
