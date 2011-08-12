@@ -28,7 +28,7 @@ OOCD_EN=0
 # Set to 1 to build libstm32 provided by ST
 LIBSTM32_EN=0
 # Set to 1 to build libopenstm32 an open source library for stm32
-LIBOPENSTM32_EN=1
+LIBOPENSTM32_EN=0
 # Make the gcc default to Cortex-M3
 DEFAULT_TO_CORTEX_M3=1
 
