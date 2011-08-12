@@ -37,10 +37,10 @@ DEFAULT_TO_CORTEX_M3=1
 ##############################################################################
 # Version and download url settings section
 ##############################################################################
-if [ ${USE_LINARO} == 0 ] ; then
+if [ ${USE_LINARO} = 0 ] ; then
 	# For FSF GCC:
 	GCCVERSION=4.6.1
-        if [ ${USE_CPP} == 0 ]; then
+        if [ ${USE_CPP} = 0 ]; then
             GCC=gcc-core-${GCCVERSION}
             GCCDIR=gcc-${GCCVERSION}
         else
@@ -81,7 +81,7 @@ echo "${CPUS} cpu's detected running make with '${PARALLEL}' flag"
 GDBFLAGS=
 BINUTILFLAGS=
 
-if [ ${DEFAULT_TO_CORTEX_M3} == 0 ] ; then
+if [ ${DEFAULT_TO_CORTEX_M3} = 0 ] ; then
 	GCCFLAGS=
 else
 	# To default to the Cortex-M3:
@@ -362,7 +362,7 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
     unpack ${GCC}
     cd build
     log "Configuring ${GCC}"
-    [ ${USE_CPP} == 1 ] && GCCFLAGS="--enable-languages='c,c++' ${GCCFLAGS}"
+    [ ${USE_CPP} = 1 ] && GCCFLAGS="--enable-languages='c,c++' ${GCCFLAGS}"
     ../${GCCDIR}/configure --target=${TARGET} \
                       --prefix=${PREFIX} \
                       --enable-interwork \
@@ -490,7 +490,7 @@ if [ ! -e ${STAMPS}/libopenstm32-${LIBOPENSTM32}.build ]; then
 fi
 fi
 
-if [ ${SUMMON_DIR_CREATED} == 1 ]; then
+if [ ${SUMMON_DIR_CREATED} = 1 ]; then
     log "Removing work directory"
     rm -rf ${SUMMON_DIR}
 fi
