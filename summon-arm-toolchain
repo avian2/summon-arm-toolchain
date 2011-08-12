@@ -22,7 +22,7 @@ SUDO=''
 # Set to 1 to be quieter while running
 QUIET=0
 # Set to 1 to use linaro gcc instead of the FSF gcc
-USE_LINARO=1
+USE_LINARO=0
 # Set to 1 to enable C++
 USE_CPP=0
 # Set to 1 to enable building of OpenOCD
