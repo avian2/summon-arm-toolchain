@@ -338,6 +338,8 @@ if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
     unpack ${NEWLIB}
     cd build
     log "Configuring ${NEWLIB}"
+    # configuration options and flags partially
+    # from https://github.com/jsnyder/arm-eabi-toolchain
     ../${NEWLIB}/configure --target=${TARGET} \
                          --prefix=${PREFIX} \
                          --enable-interwork \
@@ -347,9 +349,13 @@ if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
                          --disable-nls \
                          --disable-werror \
                          --disable-newlib-supplied-syscalls \
+                         --disable-shared \
+                         --disable-nls \
+                         --disable-libgloss \
 			 --with-float=soft
     log "Building ${NEWLIB}"
-    make ${MAKEFLAGS} CFLAGS_FOR_TARGET="-msoft-float" CCASFLAGS="-msoft-float"
+    NEWLIB_FLAGS="-ffunction-sections -fdata-sections -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fomit-frame-pointer -fno-unroll-loops -D__BUFSIZ__=256 -mabi=aapcs"
+    make ${MAKEFLAGS} CFLAGS_FOR_TARGET="${NEWLIB_FLAGS}" CCASFLAGS="${NEWLIB_FLAGS}"
     install ${NEWLIB} install
     cd ..
     log "Cleaning up ${NEWLIB}"
