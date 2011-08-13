@@ -111,7 +111,7 @@ if which fetch > /dev/null; then
 elif which wget > /dev/null; then
     FETCHCMD=wget
 elif which curl > /dev/null; then
-    FETCHCMD="curl -O"
+    FETCHCMD="curl -O -L"
 else
     FETCHCMD=ftp    # the only HTTP client on some BSD
 fi
