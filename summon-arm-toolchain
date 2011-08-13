@@ -65,6 +65,9 @@ LIBCMSIS=v1.10-2
 LIBSTM32=v3.0.0-1
 LIBSTM32USB=v3.0.1-1
 LIBOPENSTM32=master
+GMP=gmp-5.0.2
+MPFR=mpfr-3.0.1
+MPC=mpc-0.9
 
 ##############################################################################
 # Flags section
@@ -126,7 +129,7 @@ case "$(uname)" in
 	echo "Found Darwin OS."
 
 	# darwin dependencies
-	DARWINDEPS="wget mpfr libmpc gmp"
+	DARWINDEPS="wget"
 
   echo "Installing dependencies ..."
   if ! which brew > /dev/null; then
@@ -135,13 +138,7 @@ case "$(uname)" in
       brew install ${DARWINDEPS} | (grep -v '^Warning: Formula already installed: ' || true)
   fi
 
-  GCCFLAGS="${GCCFLAGS} \
-      --with-gmp=$(brew --prefix gmp) \
-      --with-mpfr=$(brew --prefix mpfr) \
-                  --with-mpc=$(brew --prefix mpc)
-  -with-libiconv-prefix=$(brew --prefix libiconv)"
-
-  TAR=gnutar
+        TAR=gnutar
 
 	OOCD_CFLAGS="-m32 -I/opt/mine/include -I/opt/local/include"
 	OOCD_LDFLAGS="-L/opt/mine/lib -L/opt/local/lib"
@@ -192,8 +189,8 @@ unpack() {
 	    ;;
 	*)
 	    echo "Unknown archive type of $1"
-	    echo ${ARCHIVE}
-	    exit 1
+	    echo "leaving the decision to tar"
+            TYPE=
 	    ;;
     esac
     ${TAR} xf${TYPE}${TARFLAGS} ${SOURCES}/$1.tar.*
@@ -219,6 +216,9 @@ fetch ${BINUTILS} http://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2
 fetch ${GCC} ${GCCURL}
 fetch ${NEWLIB} ftp://sources.redhat.com/pub/newlib/${NEWLIB}.tar.gz
 fetch ${GDB} http://ftp.gnu.org/gnu/gdb/${GDB}.tar.bz2
+fetch ${GMP} ftp://ftp.gmplib.org/pub/${GMP}/${GMP}.tar.bz2
+fetch ${MPFR} http://www.mpfr.org/${MPFR}/${MPFR}.tar.bz2
+fetch ${MPC} http://www.multiprecision.org/mpc/download/${MPC}.tar.gz
 
 if [ ${OOCD_EN} != 0 ]; then
 if [ ! -e openocd-${OOCD}.tar.bz2 ]; then
@@ -308,6 +308,12 @@ fi
 
 if [ ! -e ${STAMPS}/${GCC}-boot.build ]; then
     unpack ${GCC} boot
+    unpack ${GMP}
+    mv ${GMP} ${GCCDIR}/gmp
+    unpack ${MPFR}
+    mv ${MPFR} ${GCCDIR}/mpfr
+    unpack ${MPC}
+    mv ${MPC} ${GCCDIR}/mpc
     cd build
     log "Configuring ${GCC}-boot"
     ../${GCCDIR}/configure --target=${TARGET} \
@@ -365,6 +371,12 @@ fi
 # Yes, you need to build gcc again!
 if [ ! -e ${STAMPS}/${GCC}.build ]; then
     unpack ${GCC}
+    unpack ${GMP}
+    mv ${GMP} ${GCCDIR}/gmp
+    unpack ${MPFR}
+    mv ${MPFR} ${GCCDIR}/mpfr
+    unpack ${MPC}
+    mv ${MPC} ${GCCDIR}/mpc
     cd build
     log "Configuring ${GCC}"
     [ ${USE_CPP} = 1 ] && GCCFLAGS="--enable-languages='c,c++' ${GCCFLAGS}"
