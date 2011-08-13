@@ -101,42 +101,26 @@ STAMPS=${SUMMON_DIR}/stamps
 
 
 ##############################################################################
-# Tool section
-##############################################################################
-TAR=tar
-
-##############################################################################
 # OS and Tooldetection section
 # Detects which tools and flags to use
 ##############################################################################
 
-case "$(uname)" in
-	Linux)
-	echo "Found Linux OS."
-	;;
-	Darwin)
-	echo "Found Darwin OS."
+if ! which wget > /dev/null; then
+    echo "Please install wget"
+    exit 1
+fi
 
-	# darwin dependencies
-	DARWINDEPS="wget"
-
-  echo "Installing dependencies ..."
-  if ! which brew > /dev/null; then
-    echo "Homebrew not installed."
-  else
-      brew install ${DARWINDEPS} | (grep -v '^Warning: Formula already installed: ' || true)
-  fi
-
+if [ USE_LINARO = 1 ]; then
+    if which gnutar > /dev/null; then
         TAR=gnutar
-	;;
-	CYGWIN*)
-	echo "Found CygWin that means Windows most likely."
-	;;
-	*)
-	echo "Found unknown OS. Aborting!"
-	exit 1
-	;;
-esac
+    elif which gtar > /dev/null; then
+        TAR=gtar
+    else    # hopefully it understands the GNU format
+        TAR=tar
+    fi
+else
+    TAR=tar     # use the system tar
+fi
 
 ##############################################################################
 # Building section
