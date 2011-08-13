@@ -173,7 +173,7 @@ unpack() {
 }
 
 # Install a build
-install() {
+doinstall() {
     log $1
     ${SUDO} make ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
 }
@@ -217,7 +217,7 @@ if [ ! -e ${STAMPS}/${BINUTILS}.build ]; then
 			   ${BINUTILFLAGS}
     log "Building ${BINUTILS}"
     make ${MAKEFLAGS}
-    install ${BINUTILS} install
+    doinstall ${BINUTILS} install
     cd ..
     log "Cleaning up ${BINUTILS}"
     touch ${STAMPS}/${BINUTILS}.build
@@ -250,7 +250,7 @@ if [ ! -e ${STAMPS}/${GCC}-boot.build ]; then
 		      ${GCCFLAGS}
     log "Building ${GCC}-boot"
     make ${MAKEFLAGS} all-gcc
-    install ${GCC}-boot install-gcc
+    doinstall ${GCC}-boot install-gcc
     cd ..
     log "Cleaning up ${GCC}-boot"
     touch ${STAMPS}/${GCC}-boot.build
@@ -279,7 +279,7 @@ if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
     log "Building ${NEWLIB}"
     NEWLIB_FLAGS="-ffunction-sections -fdata-sections -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fomit-frame-pointer -fno-unroll-loops -D__BUFSIZ__=256 -mabi=aapcs"
     make ${MAKEFLAGS} CFLAGS_FOR_TARGET="${NEWLIB_FLAGS}" CCASFLAGS="${NEWLIB_FLAGS}"
-    install ${NEWLIB} install
+    doinstall ${NEWLIB} install
     cd ..
     log "Cleaning up ${NEWLIB}"
     touch ${STAMPS}/${NEWLIB}.build
@@ -312,7 +312,7 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
 	 	     ${GCCFLAGS}
     log "Building ${GCC}"
     make ${MAKEFLAGS}
-    install ${GCC} install
+    doinstall ${GCC} install
     cd ..
     log "Cleaning up ${GCC}"
     touch ${STAMPS}/${GCC}.build
@@ -331,7 +331,7 @@ if [ ! -e ${STAMPS}/${GDB}.build ]; then
 		      ${GDBFLAGS}
     log "Building ${GDB}"
     make ${MAKEFLAGS}
-    install ${GDB} install
+    doinstall ${GDB} install
     cd ..
     log "Cleaning up ${GDB}"
     touch ${STAMPS}/${GDB}.build
