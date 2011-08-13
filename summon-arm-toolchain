@@ -105,9 +105,15 @@ STAMPS=${SUMMON_DIR}/stamps
 # Detects which tools and flags to use
 ##############################################################################
 
-if ! which wget > /dev/null; then
-    echo "Please install wget"
-    exit 1
+# normalized fetching with whatever we can find
+if which fetch > /dev/null; then
+    FETCHCMD="fetch -p"
+elif which wget > /dev/null; then
+    FETCHCMD=wget
+elif which curl > /dev/null; then
+    FETCHCMD="curl -O"
+else
+    FETCHCMD=ftp    # the only HTTP client on some BSD
 fi
 
 if [ USE_LINARO = 1 ]; then
@@ -131,7 +137,7 @@ fi
 fetch() {
     if [ ! -e ${STAMPS}/$1.fetch ]; then
         log "Downloading $1 sources..."
-        wget -c $2
+        ${FETCHCMD} $2
         touch ${STAMPS}/$1.fetch
     fi
 }
