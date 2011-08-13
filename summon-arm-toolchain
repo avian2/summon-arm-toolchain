@@ -127,7 +127,6 @@ case "$(uname)" in
 
 	# darwin dependencies
 	DARWINDEPS="wget mpfr libmpc gmp"
-  DARWINDEPSCOUNT=4
 
   echo "Installing dependencies ..."
   if ! which brew > /dev/null; then
