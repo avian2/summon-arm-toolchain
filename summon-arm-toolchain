@@ -207,7 +207,9 @@ fetch ${MPFR} http://www.mpfr.org/${MPFR}/${MPFR}.tar.bz2
 fetch ${MPC} http://www.multiprecision.org/mpc/download/${MPC}.tar.gz
 
 if which sha1sum > /dev/null; then
-    ( echo "$SHA1SUMS" | sha1sum -c - ) || ( log 'ERROR: Checksum fail!'; exit 1 )
+    for f in ${BINUTILS} ${GCC} ${NEWLIB} ${GDB} ${GMP} ${MPFR} ${MPC}; do
+        ( echo "$SHA1SUMS" | grep -F $f | sha1sum -c - ) || ( log 'ERROR: Checksum fail!'; exit 1 )
+    done
 else
     log "WARING: skipping checksum checks due to missing sha1sum"
 fi
