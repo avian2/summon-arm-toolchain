@@ -119,9 +119,9 @@ STAMPS=${SUMMON_DIR}/stamps
 if which fetch > /dev/null; then
     FETCHCMD="fetch -p"
 elif which wget > /dev/null; then
-    FETCHCMD=wget
+    FETCHCMD="wget -c"
 elif which curl > /dev/null; then
-    FETCHCMD="curl -O -L"
+    FETCHCMD="curl -C - -O -L"
 else
     FETCHCMD=ftp    # the only HTTP client on some BSD
 fi
