@@ -141,6 +141,11 @@ else
     TAR=tar     # use the system tar
 fi
 
+if [ -z MAKE ]; then
+  MAKE=make
+  export make # make it known to the configure scripts
+fi
+
 ##############################################################################
 # Building section
 # You probably don't have to touch anything after this
@@ -188,7 +193,7 @@ unpack() {
 # Install a build
 doinstall() {
     log $1
-    ${SUDO} make ${MAKESILENT} $2 $3 $4 $5 $6 $7 $8
+    ${SUDO} ${MAKE} ${MAKESILENT} $2 $3 $4 $5 $6 $7 $8
 }
 
 if [ ! -d $SUMMON_DIR ]; then
@@ -237,7 +242,7 @@ if [ ! -e ${STAMPS}/${BINUTILS}.build ]; then
                            --disable-werror \
 			   ${BINUTILFLAGS}
     log "Building ${BINUTILS}"
-    make ${MAKEFLAGS}
+    ${MAKE} ${MAKEFLAGS}
     doinstall ${BINUTILS} install
     cd ..
     log "Cleaning up ${BINUTILS}"
@@ -270,7 +275,7 @@ if [ ! -e ${STAMPS}/${GCC}-boot.build ]; then
 		      --with-system-zlib \
 		      ${GCCFLAGS}
     log "Building ${GCC}-boot"
-    make ${MAKEFLAGS} all-gcc
+    ${MAKE} ${MAKEFLAGS} all-gcc
     doinstall ${GCC}-boot install-gcc
     cd ..
     log "Cleaning up ${GCC}-boot"
@@ -299,7 +304,7 @@ if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
 			 --with-float=soft
     log "Building ${NEWLIB}"
     NEWLIB_FLAGS="-ffunction-sections -fdata-sections -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fomit-frame-pointer -fno-unroll-loops -D__BUFSIZ__=256 -mabi=aapcs"
-    make ${MAKEFLAGS} CFLAGS_FOR_TARGET="${NEWLIB_FLAGS}" CCASFLAGS="${NEWLIB_FLAGS}"
+    ${MAKE} ${MAKEFLAGS} CFLAGS_FOR_TARGET="${NEWLIB_FLAGS}" CCASFLAGS="${NEWLIB_FLAGS}"
     doinstall ${NEWLIB} install
     cd ..
     log "Cleaning up ${NEWLIB}"
@@ -332,7 +337,7 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
                       --with-system-zlib \
 	 	     ${GCCFLAGS}
     log "Building ${GCC}"
-    make ${MAKEFLAGS}
+    ${MAKE} ${MAKEFLAGS}
     doinstall ${GCC} install
     cd ..
     log "Cleaning up ${GCC}"
@@ -351,7 +356,7 @@ if [ ! -e ${STAMPS}/${GDB}.build ]; then
                       --disable-werror \
 		      ${GDBFLAGS}
     log "Building ${GDB}"
-    make ${MAKEFLAGS}
+    ${MAKE} ${MAKEFLAGS}
     doinstall ${GDB} install
     cd ..
     log "Cleaning up ${GDB}"
