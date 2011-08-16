@@ -72,9 +72,9 @@ b2269d30ce7b93b7c714b90ef2f40221c2df0fcd  newlib-1.19.0.tar.gz"
 # Flags section
 ##############################################################################
 
-if which getconf > /dev/null && getconf _NPROCESSORS_ONLN 2&>1 > /dev/null; then
+if which getconf > /dev/null 2> /dev/null && getconf _NPROCESSORS_ONLN > /dev/null 2> /dev/null; then
 	CPUS=$(getconf _NPROCESSORS_ONLN)
-elif which sysctl > /dev/null && sysctl hw.ncpu 2&>1 > /dev/null; then
+elif which sysctl > /dev/null 2> /dev/null && sysctl hw.ncpu 2> /dev/null > /dev/null; then
   CPUS=$(sysctl hw.ncpu | sed -E -e 's/^hw\.ncpu(: | = )//')
 else
 	CPUS=1
