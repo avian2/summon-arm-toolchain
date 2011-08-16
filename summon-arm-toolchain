@@ -95,12 +95,13 @@ if [ -f local.sh ]; then
     . ./local.sh
 fi
 
-MAKEFLAGS=${PARALLEL}
+MAKEFLAGS=${PARALLEL} ${MAKESILENT}
 TARFLAGS=v
+MAKESILENT=
 
 if [ ${QUIET} != 0 ]; then
     TARFLAGS=
-    MAKEFLAGS="${MAKEFLAGS} -s"
+    MAKESILENT="-s"
 fi
 
 export PATH="${PREFIX}/bin:${PATH}"
@@ -185,7 +186,7 @@ unpack() {
 # Install a build
 doinstall() {
     log $1
-    ${SUDO} make ${MAKEFLAGS} $2 $3 $4 $5 $6 $7 $8
+    ${SUDO} make ${MAKESILENT} $2 $3 $4 $5 $6 $7 $8
 }
 
 if [ ! -d $SUMMON_DIR ]; then
