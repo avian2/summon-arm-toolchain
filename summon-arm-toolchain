@@ -147,7 +147,7 @@ fi
 ##############################################################################
 
 # Fetch a versioned file from a URL
-fetch() {
+dofetch() {
     if [ ! -e ${STAMPS}/$1.fetch ]; then
         log "Downloading $1 sources..."
         ${FETCHCMD} $2
@@ -201,13 +201,13 @@ mkdir -p ${STAMPS} ${SOURCES}
 
 cd ${SOURCES}
 
-fetch ${BINUTILS} http://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2
-fetch ${GCC} ${GCCURL}
-fetch ${NEWLIB} ftp://sources.redhat.com/pub/newlib/${NEWLIB}.tar.gz
-fetch ${GDB} http://ftp.gnu.org/gnu/gdb/${GDB}.tar.bz2
-fetch ${GMP} ftp://ftp.gmplib.org/pub/${GMP}/${GMP}.tar.bz2
-fetch ${MPFR} http://www.mpfr.org/${MPFR}/${MPFR}.tar.bz2
-fetch ${MPC} http://www.multiprecision.org/mpc/download/${MPC}.tar.gz
+dofetch ${BINUTILS} http://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2
+dofetch ${GCC} ${GCCURL}
+dofetch ${NEWLIB} ftp://sources.redhat.com/pub/newlib/${NEWLIB}.tar.gz
+dofetch ${GDB} http://ftp.gnu.org/gnu/gdb/${GDB}.tar.bz2
+dofetch ${GMP} ftp://ftp.gmplib.org/pub/${GMP}/${GMP}.tar.bz2
+dofetch ${MPFR} http://www.mpfr.org/${MPFR}/${MPFR}.tar.bz2
+dofetch ${MPC} http://www.multiprecision.org/mpc/download/${MPC}.tar.gz
 
 if which sha1sum > /dev/null; then
     for f in ${BINUTILS} ${GCC} ${NEWLIB} ${GDB} ${GMP} ${MPFR} ${MPC}; do
