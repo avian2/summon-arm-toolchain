@@ -141,9 +141,14 @@ else
     TAR=tar     # use the system tar
 fi
 
-if [ -z MAKE ]; then
-  MAKE=make
-  export make # make it known to the configure scripts
+if [ -z ${MAKE} ]; then
+    if which gnumake > /dev/null; then
+        export MAKE=gnumake
+    elif which gmake > /dev/null; then
+        export MAKE=gmake
+    else
+        export MAKE=make    # should be GNU make
+    fi
 fi
 
 ##############################################################################
