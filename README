@@ -11,12 +11,11 @@ To compile the ARM toolchain for barebone ARM devices:
 
 Currently tested and known to work target platforms:
 ----------------------------------------------------
-* STM32F10x (Olimex STM32-H103 eval board, Open-BLDC v0.1, v0.2, v0.3)
+* VESNA (http://sensorlab.ijs.si/hardware.html)
 
 Currently tested and known to work host platforms:
 --------------------------------------------------
-* Linux 32bit and 64bit (Debian unstable)
-* Mac OS X Snow Leopard with MacPorts
+* Linux 64bit (Debian stable)
 
 Notes for Mac OS X users:
 -------------------------
