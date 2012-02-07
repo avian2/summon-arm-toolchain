@@ -31,12 +31,9 @@ Notes for Linux users:
 ----------------------
 You need to install several packages on debian just run:
 
-apt-get install flex bison libgmp3-dev libmpfr-dev libncurses5-dev \
-libmpc-dev autoconf texinfo build-essential
+aptitude install libgmp3-dev libncurses5-dev libmpc-dev autoconf build-essential
 
-You may want to try running the following comand instead too:
-
-apt-get build-dep gcc-4.5
+aptitude build-dep gcc-4.4
 
 For xml support in gdb you may want to install libexpat1 and libexpat1-dev 
 too. 
