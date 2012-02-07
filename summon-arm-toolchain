@@ -195,6 +195,17 @@ unpack() {
 	    ;;
     esac
     ${TAR} xf${TYPE}${TARFLAGS} ${SOURCES}/$1.tar.*
+
+    # gdb-7.0.1a.tar.gz extracts to gdb-7.0.1, but the rest of the script
+    # expects it to be gdb-7.0.1a
+    if [ ! -d "$1" ]; then
+        CLEANDIR=${1%[a-z]}
+        if [ -d "$CLEANDIR" ]; then
+            mv "$CLEANDIR" "$1"
+        else
+            echo "can't find files extracted for $1"
+        fi
+    fi
 }
 
 # Install a build
