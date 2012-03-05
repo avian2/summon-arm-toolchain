@@ -34,7 +34,7 @@ DEFAULT_TO_CORTEX_M3=1
 ##############################################################################
 if [ ${USE_LINARO} = 0 ] ; then
 	# For FSF GCC:
-	GCCVERSION=4.6.1
+	GCCVERSION=4.6.2
         if [ ${USE_CPP} = 0 ]; then
             GCC=gcc-core-${GCCVERSION}
             GCCDIR=gcc-${GCCVERSION}
@@ -60,8 +60,7 @@ MPFR=mpfr-3.0.1
 MPC=mpc-0.9
 
 SHA1SUMS="525255ca6874b872540c9967a1d26acfbc7c8230  binutils-2.21.1.tar.bz2
-8bf66f7a71534ba564563a0ba0b2517aead8ac30  gcc-4.6.1.tar.bz2
-9b766705f051ffb7321de58f247688b0ae661b98  gcc-core-4.6.1.tar.bz2
+23d259e2269a40f6e203cf6f57bc7eb7a207a8b3  gcc-core-4.6.2.tar.bz2
 828d99a63e0578879150f5681d234763cff69313  gcc-linaro-4.6-2011.07.tar.bz2
 e57f2c7f93536ef54fab728eb733bf2c36550718  gdb-7.3.1.tar.bz2
 3b2c0d50533bcf834c2da0a700dfc2f4852a07e4  gdb-7.0.1a.tar.bz2
