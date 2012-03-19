@@ -45,7 +45,7 @@ while getopts c:Chj:st: name; do
         C) USE_CPP=1 ;;
         j)
             if [ ${OPTARG} -gt 0 2> /dev/null ]; then
-                PARALLEL=${OPTARG}
+                PARALLEL=-j${OPTARG}
             else
                 printf "%s: invalid number of jobs\n" $0
                 exit 1
@@ -104,15 +104,16 @@ fbf402fc196724ae60ef01eb6ca8490b1ea4db69  mpfr-3.0.1.tar.bz2
 # Flags section
 ##############################################################################
 
-if which getconf > /dev/null 2> /dev/null && getconf _NPROCESSORS_ONLN > /dev/null 2> /dev/null; then
-	CPUS=$(getconf _NPROCESSORS_ONLN)
-elif which sysctl > /dev/null 2> /dev/null && sysctl hw.ncpu 2> /dev/null > /dev/null; then
-  CPUS=$(sysctl hw.ncpu | sed -E -e 's/^hw\.ncpu(: | = )//')
-else
-	CPUS=1
+if [ "X${PARALLEL}" = "X" ]; then
+    if which getconf > /dev/null 2> /dev/null && getconf _NPROCESSORS_ONLN > /dev/null 2> /dev/null; then
+            CPUS=$(getconf _NPROCESSORS_ONLN)
+    elif which sysctl > /dev/null 2> /dev/null && sysctl hw.ncpu 2> /dev/null > /dev/null; then
+      CPUS=$(sysctl hw.ncpu | sed -E -e 's/^hw\.ncpu(: | = )//')
+    else
+            CPUS=1
+    fi
+    PARALLEL=-j$((CPUS + 1))
 fi
-PARALLEL=-j$((CPUS + 1))
-echo "${CPUS} cpu's detected running make with '${PARALLEL}' flag"
 
 GDBFLAGS=
 BINUTILFLAGS=
