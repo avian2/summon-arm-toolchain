@@ -31,11 +31,11 @@ DEFAULT_TO_CORTEX_M3=1
 # parse options
 ##############################################################################
 while getopts c:Chj:st: name; do
-    case $name in
+    case ${name} in
         c)
-            if [ $OPTARG = 'linaro' ]; then
+            if [ ${OPTARG} = 'linaro' ]; then
                 USE_LINARO=1
-            elif [ $OPTARG = 'fsf' -o $OPTARG = 'gnu' ]; then
+            elif [ ${OPTARG} = 'fsf' -o ${OPTARG} = 'gnu' ]; then
                 USE_LINARO=0
             else
                 printf "%s: invalid compiler. Available variants:\n\tfsf\tStandard FSF GCC (default)\n\tlinaro\tLinaro GCC\n" $0
@@ -44,15 +44,15 @@ while getopts c:Chj:st: name; do
             ;;
         C) USE_CPP=1 ;;
         j)
-            if [ $OPTARG -gt 0 2> /dev/null ]; then
-                PARALLEL=$OPTARG
+            if [ ${OPTARG} -gt 0 2> /dev/null ]; then
+                PARALLEL=${OPTARG}
             else
                 printf "%s: invalid number of jobs\n" $0
                 exit 1
             fi
             ;;
         s) SUDO='sudo' ;;
-        t) PREFIX="$OPTARG" ;;
+        t) PREFIX="${OPTARG}" ;;
         h|?)
             printf "Usage:\n\t%s [-Cs] [-c <GCC flavour>] [-j <jobs>] [-t <target directory>] [-w <work directory>]\n\t%s -h\n\n\t-c\tspecify GCC flavour (fsf or linaro, default fsf)\n\t-C\tbuild C++ support\n\t-j\tspecify make(1) parallel jobs (default: no. of CPUs+1)\n\t-s\tuse sudo(1) when installing\n\t-t\tspecify target directory (default: ~/arm)\n\t-w\tspecify work directory (default: <target direcory>/work\n\t-h\tget help\n" $0 $0
             exit 1
