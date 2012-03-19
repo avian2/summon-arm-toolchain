@@ -150,6 +150,14 @@ if [ -z ${MAKE} ]; then
     fi
 fi
 
+if which sha1sum > /dev/null; then
+    SHA1SUM=sha1sum
+elif which shasum > /dev/null; then
+    SHA1SUM="shasum -a 1"
+else
+    SHA1SUM=""
+fi
+
 ##############################################################################
 # Building section
 # You probably don't have to touch anything after this
@@ -218,9 +226,9 @@ dofetch ${GMP} ftp://ftp.gmplib.org/pub/${GMP}/${GMP}.tar.bz2
 dofetch ${MPFR} http://www.mpfr.org/${MPFR}/${MPFR}.tar.bz2
 dofetch ${MPC} http://www.multiprecision.org/mpc/download/${MPC}.tar.gz
 
-if which sha1sum > /dev/null; then
+if [ "X${SHA1SUM}" != "X" ]; then
     for f in ${BINUTILS} ${GCC} ${NEWLIB} ${GDB} ${GMP} ${MPFR} ${MPC}; do
-        ( echo "$SHA1SUMS" | grep -F $f | sha1sum -c - ) || ( log 'ERROR: Checksum fail!'; exit 1 )
+        ( echo "${SHA1SUMS}" | grep -F $f | ${SHA1SUM} -c - ) || ( log 'ERROR: Checksum fail!'; exit 1 )
     done
 else
     log "WARING: skipping checksum checks due to missing sha1sum"
