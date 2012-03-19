@@ -76,8 +76,8 @@ if [ ${USE_LINARO} = 0 ] ; then
         GCCURL=http://ftp.gnu.org/gnu/gcc/${GCCDIR}/${GCC}.tar.bz2
 else
 	# For the Linaro GCC:
-	GCCRELEASE=4.6-2011.12
-	GCCVERSION=4.6-2011.12
+	GCCRELEASE=4.6-2012.03
+	GCCVERSION=${GCCRELEASE}
         GCC=gcc-linaro-${GCCRELEASE}
 	GCCDIR=gcc-linaro-${GCCVERSION}
 	GCCURL=http://launchpad.net/gcc-linaro/4.6/${GCCRELEASE}/+download/gcc-linaro-${GCCRELEASE}.tar.bz2
@@ -93,7 +93,7 @@ MPC=mpc-0.9
 SHA1SUMS="65b304a0b9a53a686ce50a01173d1f40f8efe404  binutils-2.22.tar.bz2
 ce317ca5c8185b58bc9300182b534608c578637f  gcc-4.6.3.tar.bz2
 eaefb90df5a833c94560a8dda177bd1e165c2a88  gcc-core-4.6.3.tar.bz2
-a29096470d317b83ac69d3d90be3a4a491a92109  gcc-linaro-4.6-2011.12.tar.bz2
+99552387d1b4c36e356b59a837911976b08ad926  gcc-linaro-4.6-2012.03.tar.bz2
 e57f2c7f93536ef54fab728eb733bf2c36550718  gdb-7.3.1.tar.bz2
 2968220e1988eabb61f921d11e5d2db5431e0a35  gmp-5.0.2.tar.bz2
 229722d553030734d49731844abfef7617b64f1a  mpc-0.9.tar.gz
