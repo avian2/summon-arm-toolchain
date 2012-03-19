@@ -59,6 +59,7 @@ MPFR=mpfr-3.0.1
 MPC=mpc-0.9
 
 SHA1SUMS="65b304a0b9a53a686ce50a01173d1f40f8efe404  binutils-2.22.tar.bz2
+ce317ca5c8185b58bc9300182b534608c578637f  gcc-4.6.3.tar.bz2
 eaefb90df5a833c94560a8dda177bd1e165c2a88  gcc-core-4.6.3.tar.bz2
 a29096470d317b83ac69d3d90be3a4a491a92109  gcc-linaro-4.6-2011.12.tar.bz2
 e57f2c7f93536ef54fab728eb733bf2c36550718  gdb-7.3.1.tar.bz2
