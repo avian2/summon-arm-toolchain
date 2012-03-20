@@ -344,12 +344,11 @@ if [ ! -e ${STAMPS}/${NEWLIB}.build ]; then
                          --disable-nls \
                          --disable-werror \
                          --disable-newlib-supplied-syscalls \
+			 --enable-newlib-io-long-long \
                          --disable-shared \
-                         --disable-nls \
-                         --disable-libgloss \
 			 --with-float=soft
     log "Building ${NEWLIB}"
-    NEWLIB_FLAGS="-ffunction-sections -fdata-sections -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fomit-frame-pointer -fno-unroll-loops -D__BUFSIZ__=256 -mabi=aapcs"
+    NEWLIB_FLAGS="-ffunction-sections -fdata-sections -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -g -fomit-frame-pointer -fno-unroll-loops -D__BUFSIZ__=256 -mabi=aapcs"
     ${MAKE} ${MAKEFLAGS} CFLAGS_FOR_TARGET="${NEWLIB_FLAGS}" CCASFLAGS="${NEWLIB_FLAGS}"
     doinstall ${NEWLIB} install
     cd ..
