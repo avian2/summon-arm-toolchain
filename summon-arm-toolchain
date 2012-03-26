@@ -14,7 +14,6 @@ set -e
 ##############################################################################
 TARGET=arm-none-eabi		# Or: TARGET=arm-elf
 [ -z $PREFIX ] && PREFIX=${HOME}/arm	# Install location of your final toolchain
-[ -z $WORKDIR ] && WORKDIR=$PREFIX/work     #temporary directory
 PARALLEL=			# Or: PARALLEL="-j 5" for 4 CPUs
 # Set to 'sudo' if you need superuser privileges while installing
 SUDO=''
@@ -30,7 +29,7 @@ DEFAULT_TO_CORTEX_M3=1
 ##############################################################################
 # parse options
 ##############################################################################
-while getopts c:Chj:st: name; do
+while getopts c:Chj:st:w: name; do
     case ${name} in
         c)
             if [ ${OPTARG} = 'linaro' ]; then
@@ -53,12 +52,19 @@ while getopts c:Chj:st: name; do
             ;;
         s) SUDO='sudo' ;;
         t) PREFIX="${OPTARG}" ;;
+        w) ARG_WORKDIR="${OPTARG}" ;;
         h|?)
             printf "Usage:\n\t%s [-Cs] [-c <GCC flavour>] [-j <jobs>] [-t <target directory>] [-w <work directory>]\n\t%s -h\n\n\t-c\tspecify GCC flavour (fsf or linaro, default fsf)\n\t-C\tbuild C++ support\n\t-j\tspecify make(1) parallel jobs (default: no. of CPUs+1)\n\t-s\tuse sudo(1) when installing\n\t-t\tspecify target directory (default: ~/arm)\n\t-w\tspecify work directory (default: <target direcory>/work\n\t-h\tget help\n" $0 $0
             exit 1
         ;;
     esac
 done
+
+if [ -z $ARG_WORKDIR ]; then
+        [ -z $WORKDIR ] && WORKDIR=$PREFIX/work
+else
+        WORKDIR=$ARG_WORKDIR
+fi
 
 ##############################################################################
 # Version and download url settings section
