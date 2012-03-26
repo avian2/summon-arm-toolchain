@@ -397,6 +397,10 @@ if [ ! -e ${STAMPS}/${GCC}.build ]; then
 fi
 
 if [ ! -e ${STAMPS}/${GDB}.build ]; then
+    GDB_ETC_PATH="${PREFIX}/etc/gdb"
+    GDB_INIT_PATH="${GDB_ETC_PATH}/gdbinit"
+    GDB_TARGET_PATH="${GDB_ETC_PATH}/target.xml"
+
     unpack ${GDB}
     cd build
     log "Configuring ${GDB}"
@@ -405,6 +409,7 @@ if [ ! -e ${STAMPS}/${GDB}.build ]; then
                       --enable-interwork \
                       --enable-multilib \
                       --disable-werror \
+                      --with-system-gdbinit=${GDB_INIT_PATH} \
 		      ${GDBFLAGS}
     log "Building ${GDB}"
     ${MAKE} ${MAKEFLAGS}
@@ -413,6 +418,54 @@ if [ ! -e ${STAMPS}/${GDB}.build ]; then
     log "Cleaning up ${GDB}"
     touch ${STAMPS}/${GDB}.build
     rm -rf build/* ${GDB}
+
+    # Workaround for OpenOCD 0.5.0 incompatibility with recent
+    # GDB versions.
+    #
+    # Source: http://lists.berlios.de/pipermail/openocd-development/2011-August/020823.html
+
+    mkdir -p ${GDB_ETC_PATH}
+    cat > ${GDB_INIT_PATH} <<END
+set tdesc filename ${GDB_TARGET_PATH}
+END
+
+    cat > ${GDB_TARGET_PATH} <<END
+<?xml version="1.0"?>
+<!DOCTYPE target SYSTEM "gdb-target.dtd">
+<target>
+   <feature name="org.gnu.gdb.arm.core">
+     <reg name="r0" bitsize="32" type="uint32"/>
+     <reg name="r1" bitsize="32" type="uint32"/>
+     <reg name="r2" bitsize="32" type="uint32"/>
+     <reg name="r3" bitsize="32" type="uint32"/>
+     <reg name="r4" bitsize="32" type="uint32"/>
+     <reg name="r5" bitsize="32" type="uint32"/>
+     <reg name="r6" bitsize="32" type="uint32"/>
+     <reg name="r7" bitsize="32" type="uint32"/>
+     <reg name="r8" bitsize="32" type="uint32"/>
+     <reg name="r9" bitsize="32" type="uint32"/>
+     <reg name="r10" bitsize="32" type="uint32"/>
+     <reg name="r11" bitsize="32" type="uint32"/>
+     <reg name="r12" bitsize="32" type="uint32"/>
+     <reg name="sp" bitsize="32" type="data_ptr"/>
+     <reg name="lr" bitsize="32"/>
+     <reg name="pc" bitsize="32" type="code_ptr"/>
+     <reg name="cpsr" bitsize="32" regnum="25"/>
+   </feature>
+   <feature name="org.gnu.gdb.arm.fpa">
+     <reg name="f0" bitsize="96" type="arm_fpa_ext" regnum="16"/>
+     <reg name="f1" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f2" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f3" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f4" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f5" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f6" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="f7" bitsize="96" type="arm_fpa_ext"/>
+     <reg name="fps" bitsize="32"/>
+   </feature>
+</target>
+END
+
 fi
 
 if [ ${SUMMON_DIR_CREATED} = 1 ]; then
